@@ -14,16 +14,17 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Component
 public class FileService {
-    
+
+    private final String UPLOAD_FOLDER = "./src/main/resources/static/uploads/";
     private String uploadFolder = null;
 
     public FileService() {
-        String p = System.getProperty("java.class.path");
-        uploadFolder = p.substring(0, p.indexOf(";")) + "\\static\\uploads\\";
+        String path = System.getProperty("java.class.path");
+        uploadFolder = path.substring(0, path.indexOf(";")) + "\\static\\uploads\\";
     }
 
     public String store(MultipartFile photo) {
-        return this.storePhoto(photo, uploadFolder);
+        return this.storePhoto(photo, UPLOAD_FOLDER);
     }
 //
 //    public String store(MultipartFile photo, String folder) {
@@ -41,6 +42,19 @@ public class FileService {
             String pathString = folder + photoTitle;
             Path path = Paths.get(pathString);
             Files.write(path, bytes);
+            this.complementaryStore(bytes, photoTitle);
+            return photoTitle;
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    private String complementaryStore(byte[] bytes, String photoTitle) {
+        try {
+            String pathString = uploadFolder + photoTitle;
+            Path path = Paths.get(pathString);
+            Files.write(path, bytes);
             return photoTitle;
         } catch (IOException e) {
             System.out.println(e);
@@ -49,12 +63,12 @@ public class FileService {
     }
 
     public boolean delete(String photoTitle) {
-        return this.deletePhoto(photoTitle, uploadFolder);
+        return this.deletePhoto(photoTitle, UPLOAD_FOLDER);
     }
-
-    public boolean delete(String photoTitle, String folder) {
-        return this.deletePhoto(photoTitle, folder);
-    }
+//
+//    public boolean delete(String photoTitle, String folder) {
+//        return this.deletePhoto(photoTitle, folder);
+//    }
 
     private boolean deletePhoto(String photoTitle, String folder) {
         if (photoTitle == null || photoTitle.isEmpty()) {
@@ -62,7 +76,11 @@ public class FileService {
         }
         try {
             Path path = Paths.get(folder + photoTitle);
-            return Files.deleteIfExists(path);
+            boolean deleted = Files.deleteIfExists(path);
+            if (deleted) {
+                path = Paths.get(uploadFolder + photoTitle);
+                return Files.deleteIfExists(path);
+            }
         } catch (IOException e) {
             System.out.println(e);
         }
