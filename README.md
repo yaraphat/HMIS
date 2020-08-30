@@ -12,6 +12,7 @@ Download project from [pip](https://github.com/yaraphat/HMIS) or clone from gith
 ```bash
 git https://github.com/yaraphat/HMIS.git
 ```
+Import the SQL file to database(Important). Schema name 'hmis'. 
 
 Run the project from IDE or command line using maven. From the project root folder run command-
 

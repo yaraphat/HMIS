@@ -34,7 +34,7 @@ and open the template in the editor.
                     <li class="nav-item dropdown user-menu">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                             <th:block th:if="${session.userPhoto}">
-                                <img th:src="@{'/uploads/'+${session.userPhoto}}" class="user-image img-circle elevation-2" alt="User Image">
+                                <img th:src="@{'/uploads/'+${session.userPhoto}}" class="user-image img-circle elevation-2" alt="User Photo">
                             </th:block>
                             <th:block th:if="${session.userPhoto == null}">
                                 <th:block th:switch="${userRole}">
@@ -47,7 +47,7 @@ and open the template in the editor.
                         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                             <!-- User image -->
                             <li class="user-header bg-primary">
-                                <img th:src="@{'/uploads/'+${session.userPhoto}}" class="img-circle elevation-2" alt="User Image">
+                                <img th:src="@{'/uploads/'+${session.userPhoto}}" class="img-circle elevation-2" alt="User Photo">
 
                                 <p th:text="${#strings.capitalizeWords(session.userName)}"></p>
                                 <span th:switch="${userRole}">
